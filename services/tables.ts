@@ -81,8 +81,9 @@ const getAllTables = (locale: Locale) => {
   }, {} as TableAttrInfo);
   const tables = tableList.map(({table,tableInfo}) => {
     const list = toObjectList(table) as Record<string, unknown>[];
-    const content = list.map(row => ([row?.id as string,{...row,type:"table",parent:tableInfo.id}] as const));
-    return [[tableInfo.id,{type:"tableInfo",...tableInfo}],...content] as const;
+    const content = list.map(({id,...row}) => ([id as string,{type:tableInfo.file,...row}] as const));
+    const {id:tableInfoId,...tableInfoRest} = tableInfo;
+    return [[tableInfoId,{type:"tableInfo",...tableInfoRest}],...content] as const;
   }).flat().map(row=>row[0] in attrInfo ? [row[0],{...row[1],withAttr:true}] as const : row);
   return {attrInfo,tables};
 };

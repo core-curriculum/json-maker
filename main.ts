@@ -33,5 +33,5 @@ Promise.all(localeList.map(async (locale) => {
     `${dir}/outcome_tree.json`,
     JSON.stringify(idTree, null, 2),
   );
-  Deno.writeTextFileSync(`${dir}/id_list.json`, JSON.stringify(idList));
+  Deno.writeTextFileSync(`${dir}/id_list.json`, JSON.stringify(idList, null, 2));
 }));

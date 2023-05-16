@@ -139,7 +139,7 @@ const makeOutcomesTree = (
   const {infoList:attrInfo,rows:[, ...table]} = makeMappedOutcomesTable(fullOutcomesTable, infoDict, locale);
   const tree = tableToTree(table, (u1, u2) => u1.id === u2.id) as Tree<OutcomeInfo>;
   const idTree = mapTree(tree, node => node.id);
-  const outcomeList = treeToList(tree).map(row => ([row.item.id,{...row.item,}]));
+  const outcomeList = treeToList(tree).map(({item:{id,...rest}}) => ([id,{...rest}]));
   return {attrInfo,idTree,outcomeList}
 };
 
