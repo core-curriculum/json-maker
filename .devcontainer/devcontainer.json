@@ -1,0 +1,35 @@
+{
+  "name": "${localWorkspaceFolderBasename}",
+  "context": "..",
+  "dockerFile": "dockerfile",
+  "features": {
+    "ghcr.io/devcontainers/features/github-cli:1": {}
+  },
+  "workspaceFolder": "/usr/src/${localWorkspaceFolderBasename}",
+  "mounts": [
+    "source=${localWorkspaceFolder}/,target=/usr/src/${localWorkspaceFolderBasename},type=bind,consistency=cached",
+    "source=${localWorkspaceFolderBasename}_DENO_DIR,target=/deno-dir",
+    "source=${localWorkspaceFolderBasename}_HOME,target=/home/deno"
+  ],
+  "remoteUser": "deno",
+  "customizations": {
+    "extensions": [
+      "coenraads.bracket-pair-colorizer-2",
+      "oderwat.indent-rainbow",
+      "ms-azuretools.vscode-docker",
+      "denoland.vscode-deno",
+      "GitHub.copilot-chat"
+    ],
+    "settings": {
+      "terminal.integrated.profiles.linux": {
+        "bash": {
+          "path": "/bin/bash"
+        }
+      },
+      "terminal.integrated.defaultProfile.linux": "bash"
+    },
+      "vscode": {
+
+    }
+  }
+}

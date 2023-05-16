@@ -1,0 +1,48 @@
+name: Output JSON and push to core-curriculum/json-data
+
+on:
+  schedule:
+    - cron: "3 2 * * *"
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Output JSON and push to core-curriculum/json-data
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 1   
+      - name: Checkout output in data repo
+        uses: actions/checkout@v3
+        with:
+          repository: core-curriculum/json-data
+          path: output
+          fetch-depth: 1 
+      - name: Setup Deno
+        uses: denoland/setup-deno@v1
+        with:
+          deno-version: v1.x 
+      - name: Run task
+        run: deno task main
+      - name: Set current datetime as env variable
+        env:
+          TZ: 'Asia/Tokyo' # タイムゾーン指定
+        run: echo "CURRENT_DATETIME=$(date +'%Y-%m-%d %H:%M:%S')" >> $GITHUB_ENV
+      - name: commit and push
+        run: |
+          cd output
+          git add -N . # 新規ファイルを含める
+          if ! git diff --exit-code --quiet
+          then
+            echo change ditected update reposistory
+            git config user.name github-actions
+            git config user.email github-actions@github.com
+            git add .
+            git commit -m "Updated from db-backup(${{ env.CURRENT_DATETIME }}(JST))"
+            git push
+          else
+            echo no change
+          fi
+
