@@ -1,7 +1,7 @@
 import * as path from "path";
 import { parseCSV } from "../libs/parseCSV.ts";
 import { outcomeDir, tableDir } from "./paths.ts";
-import type { Locale} from "./paths.ts"
+import type { Locale } from "./paths.ts"
 
 const readTextFileSync = Deno.readTextFileSync;
 
@@ -30,6 +30,35 @@ const loadCsv = <HEADER extends readonly string[] = string[]>(path: string) => {
   return res.value as unknown as Table<HEADER>;
 };
 
+type Tables = {
+  TBL0100: [["index", "id", "system", "category", "item", "core"], ...readonly (readonly string[])[]],
+  TBL0201: [["index", "id", "category", "item"], ...readonly (readonly string[])[]],
+  TBL0202: [["index", "id", "category", "item"], ...readonly (readonly string[])[]],
+  TBL0203: [["index", "id", "category", "item"], ...readonly (readonly string[])[]],
+  TBL0204: [["index", "id", "category", "item"], ...readonly (readonly string[])[]],
+  TBL0205: [["index", "id", "category", "item"], ...readonly (readonly string[])[]],
+  TBL0206: [["index", "id", "category", "item"], ...readonly (readonly string[])[]],
+  TBL0207: [["index", "id", "category", "item"], ...readonly (readonly string[])[]],
+  TBL0208: [["index", "id", "category", "item"], ...readonly (readonly string[])[]],
+  TBL0209: [["index", "id", "category", "item"], ...readonly (readonly string[])[]],
+  TBL0210: [["index", "id", "category", "item"], ...readonly (readonly string[])[]],
+  TBL0211: [["index", "id", "category", "item"], ...readonly (readonly string[])[]],
+  TBL0212: [["index", "id", "category", "item"], ...readonly (readonly string[])[]],
+  TBL0213: [["index", "id", "category", "item"], ...readonly (readonly string[])[]],
+  TBL0214: [["index", "id", "category", "item"], ...readonly (readonly string[])[]],
+  TBL0215: [["index", "id", "category", "item"], ...readonly (readonly string[])[]],
+  TBL0216: [["index", "id", "category", "item"], ...readonly (readonly string[])[]],
+  TBL0217: [["index", "id", "category", "item"], ...readonly (readonly string[])[]],
+  TBL0218: [["index", "id", "category", "item"], ...readonly (readonly string[])[]],
+  TBL0219: [["index", "id", "category", "item"], ...readonly (readonly string[])[]],
+  TBL0220: [["index", "id", "category", "item"], ...readonly (readonly string[])[]],
+  TBL0300: [["index", "id", "item"], ...readonly (readonly string[])[]],
+  TBL0400: [["index", "id", "item"], ...readonly (readonly string[])[]],
+  TBL0500: [["index", "id", "item", "ddx"], ...readonly (readonly string[])[]],
+  TBL0600: [["index", "id", "item"], ...readonly (readonly string[])[]],
+  TBL0700: [["index", "id", "category", "item"], ...readonly (readonly string[])[]],
+}
+
 const makeCache = <T>() => {
   const cache = new Map<string, T>();
   return (key: string, getFunc: (key: string) => T) => {
@@ -56,9 +85,9 @@ const loadOutcomes = <T extends LayerTag>(layer: T, locale: Locale) => {
   return loadCachedTable(filename) as Table<LayerHeaders[T]>;
 };
 
-const loadTable = (tableFile: string, locale: Locale) => {
+const loadTable = <T extends keyof Tables>(tableFile: T, locale: Locale) => {
   const filename = path.resolve(tableDir(locale), `${tableFile}.csv`);
-  return loadCachedTable(filename);
+  return loadCachedTable(filename) as Table<Tables[T][0]>;
 };
 
 const loadTableIndex = (locale: Locale) => {
@@ -66,4 +95,4 @@ const loadTableIndex = (locale: Locale) => {
   return loadCachedTable(filename) as Table<TableIndexHeader>;
 };
 
-export { loadOutcomes, loadTable, loadTableIndex };
+export { loadOutcomes, loadTable, loadTableIndex, type LayerHeaders, type Tables, type LayerTag };

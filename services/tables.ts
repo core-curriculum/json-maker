@@ -5,7 +5,7 @@ import {
   toObjectList,
 } from "../libs/tableUtils.ts";
 import { MappedText, mapText, MappedInfo } from "../libs/textMapper.ts";
-import { loadTable, loadTableIndex } from "../services/loadCsv.ts";
+import { loadTable, loadTableIndex, Tables } from "../services/loadCsv.ts";
 import { Locale } from "./paths.ts";
 import { AttrInfo, getReplaceMap } from "./replaceMap.ts";
 
@@ -38,23 +38,24 @@ const loadTableInfoDict = (locale: Locale) => {
 };
 
 const tableInfoDictToIdList = (dict: TableInfoDict) => {
-  return Object.entries(dict).map(([,info]) => {
-    return [info.id, {type:"tableInfo",...info} as const] as const;
+  return Object.entries(dict).map(([, info]) => {
+    return [info.id, { type: "tableInfo", ...info } as const] as const;
   });
 }
 
 
 const getTableFiles = (locale: Locale) => {
-  return Object.keys(loadTableInfoDict(locale));
+  return Object.keys(loadTableInfoDict(locale)) as (keyof Tables)[];
 };
 
-const getTable = (file: string, locale: Locale): TableInfoSet => {
+const getTable = (file: keyof Tables, locale: Locale): TableInfoSet => {
   const tableInfo = loadTableInfoDict(locale)[file];
   const rawTable = loadTable(file, locale);
   const map = getReplaceMap(locale as Locale);
-  const attrTable: HeaderedTable<MappedText<AttrInfo>> = mapTable(rawTable, cell =>
-    mapText(cell, map),
-  );
+  const attrTable: HeaderedTable<MappedText<AttrInfo>> =
+    mapTable<string, MappedText<AttrInfo>>(rawTable, cell =>
+      mapText(cell, map),
+    );
   const table = mapTable(attrTable, cell => cell.text);
   const attrInfo = reduceTable(
     attrTable,
@@ -64,7 +65,7 @@ const getTable = (file: string, locale: Locale): TableInfoSet => {
         value.infoList.length > 0 ? [[key, value.infoList] as const] : [],
       );
       const infoDict = Object.fromEntries(infoLists);
-      return infoLists.length>0 ? { ...dict, [id]: infoDict } : dict;
+      return infoLists.length > 0 ? { ...dict, [id]: infoDict } : dict;
     },
     {} as TableAttrInfo,
   );
@@ -75,17 +76,17 @@ const getTable = (file: string, locale: Locale): TableInfoSet => {
 const getAllTables = (locale: Locale) => {
   const files = getTableFiles(locale);
   const tableList = files
-    .map((file: string) => getTable(file, locale));
+    .map((file) => getTable(file, locale));
   const attrInfo = tableList.reduce((dict, table) => {
     return { ...dict, ...table.attrInfo };
   }, {} as TableAttrInfo);
-  const tables = tableList.map(({table,tableInfo}) => {
+  const tables = tableList.map(({ table, tableInfo }) => {
     const list = toObjectList(table) as Record<string, unknown>[];
-    const content = list.map(({id,...row}) => ([id as string,{type:tableInfo.file,...row}] as const));
-    const {id:tableInfoId,...tableInfoRest} = tableInfo;
-    return [[tableInfoId,{type:"tableInfo",...tableInfoRest}],...content] as const;
-  }).flat().map(row=>row[0] in attrInfo ? [row[0],{...row[1],withAttr:true}] as const : row);
-  return {attrInfo,tables};
+    const content = list.map(({ id, ...row }) => ([id as string, { type: tableInfo.file, ...row }] as const));
+    const { id: tableInfoId, ...tableInfoRest } = tableInfo;
+    return [[tableInfoId, { type: "tableInfo", ...tableInfoRest }], ...content] as const;
+  }).flat().map(row => row[0] in attrInfo ? [row[0], { ...row[1], withAttr: true }] as const : row);
+  return { attrInfo, tables };
 };
 
 type TableInfoDict = ReturnType<typeof loadTableInfoDict>;
