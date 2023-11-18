@@ -1,7 +1,7 @@
 import * as path from "path";
-import { parseCSV } from "../libs/parseCSV.ts";
-import { outcomeDir, tableDir } from "./paths.ts";
-import type { Locale } from "./paths.ts"
+import { parseCSV } from "../../libs/csv.ts";
+import { outcomeDir, tableDir } from "../paths.ts";
+import type { Locale } from "../paths.ts"
 
 const readTextFileSync = Deno.readTextFileSync;
 

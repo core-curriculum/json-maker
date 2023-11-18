@@ -5,13 +5,13 @@ import {
   selectColumnsByNames,
   renameColumns,
   mapRow,
-} from "../libs/tableUtils.ts";
-import { MappedInfo, mapText } from "../libs/textMapper.ts";
-import { mapTree, tableToTree, treeToList } from "../libs/treeUtils.ts";
-import type { Tree } from "../libs/treeUtils.ts";
+} from "../../libs/tableUtils.ts";
+import { MappedInfo, mapText } from "../../libs/textMapper.ts";
+import { mapTree, tableToTree, treeToList } from "../../libs/treeUtils.ts";
+import type { Tree } from "../../libs/treeUtils.ts";
 import { loadOutcomes } from "./loadCsv.ts";
 import type { TableInfoDict } from "./tables.ts";
-import { Locale } from "./paths.ts";
+import { Locale } from "../paths.ts";
 import { AttrInfo, getReplaceMap } from "./replaceMap.ts";
 
 const loadFullOutcomesTable = (locale: Locale) => {
@@ -84,7 +84,7 @@ const makeMappedOutcomesTable = (
   locale: Locale,
 ) => {
   const map = getReplaceMap(locale, infoDict);
-  const infoList:Record<string,{[key:string]:MappedInfo<AttrInfo>[]}> = {};
+  const infoList: Record<string, { [key: string]: MappedInfo<AttrInfo>[] }> = {};
 
   const rows = mapRow(fullOutcomesTable, row => {
     const { text: l4text, infoList: l4AttrInfo } = mapText(row["l4_item"], map);
@@ -119,16 +119,16 @@ const makeMappedOutcomesTable = (
       },
     };
     if (l4AttrInfo?.length > 0) {
-      infoList[newRow.l4.id]  = {item:l4AttrInfo};
+      infoList[newRow.l4.id] = { item: l4AttrInfo };
       newRow.l4.withAttr = true;
     }
-    if (l3AttrInfo?.length > 0){
-      infoList[newRow.l3.id]  = {item:l3AttrInfo};
+    if (l3AttrInfo?.length > 0) {
+      infoList[newRow.l3.id] = { item: l3AttrInfo };
       newRow.l3.withAttr = true;
     }
     return newRow;
   });
-  return {infoList,rows};
+  return { infoList, rows };
 };
 
 const makeOutcomesTree = (
@@ -136,11 +136,11 @@ const makeOutcomesTree = (
   infoDict: TableInfoDict,
   locale: Locale,
 ) => {
-  const {infoList:attrInfo,rows:[, ...table]} = makeMappedOutcomesTable(fullOutcomesTable, infoDict, locale);
+  const { infoList: attrInfo, rows: [, ...table] } = makeMappedOutcomesTable(fullOutcomesTable, infoDict, locale);
   const tree = tableToTree(table, (u1, u2) => u1.id === u2.id) as Tree<OutcomeInfo>;
   const idTree = mapTree(tree, node => node.id);
-  const outcomeList = treeToList(tree).map(({item:{id,...rest}}) => ([id,{...rest}]));
-  return {attrInfo,idTree,outcomeList}
+  const outcomeList = treeToList(tree).map(({ item: { id, ...rest } }) => ([id, { ...rest }]));
+  return { attrInfo, idTree, outcomeList }
 };
 
 export { loadFullOutcomesTable, makeMappedOutcomesTable, makeOutcomesTree };

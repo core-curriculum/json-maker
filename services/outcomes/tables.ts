@@ -3,10 +3,10 @@ import {
   mapTable,
   reduceTable,
   toObjectList,
-} from "../libs/tableUtils.ts";
-import { MappedText, mapText, MappedInfo } from "../libs/textMapper.ts";
-import { loadTable, loadTableIndex, Tables } from "../services/loadCsv.ts";
-import { Locale } from "./paths.ts";
+} from "../../libs/tableUtils.ts";
+import { MappedText, mapText, MappedInfo } from "../../libs/textMapper.ts";
+import { loadTable, loadTableIndex, Tables } from "./loadCsv.ts";
+import { Locale } from "../paths.ts";
 import { AttrInfo, getReplaceMap } from "./replaceMap.ts";
 
 const fileToTableLink = (file: string) => {
