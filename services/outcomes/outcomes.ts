@@ -11,7 +11,7 @@ import { mapTree, tableToTree, treeToList } from "../../libs/treeUtils.ts";
 import type { Tree } from "../../libs/treeUtils.ts";
 import { loadOutcomes } from "./loadCsv.ts";
 import type { TableInfoDict } from "./tables.ts";
-import { Locale } from "../paths.ts";
+import { Locale } from "../locale.ts";
 import { AttrInfo, getReplaceMap } from "./replaceMap.ts";
 
 const loadFullOutcomesTable = (locale: Locale) => {

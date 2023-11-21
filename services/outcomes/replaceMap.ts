@@ -1,5 +1,5 @@
 import { ReplaceMap } from "../../libs/textMapper.ts";
-import { Locale } from "../paths.ts";
+import { Locale } from "../locale.ts";
 import { TableInfoDict } from "./tables.ts";
 
 type LinkInfo = {
