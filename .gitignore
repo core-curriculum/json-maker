@@ -1,3 +1,4 @@
 .env
 output
 data_in_github
+deno.lock
