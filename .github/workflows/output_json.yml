@@ -1,4 +1,4 @@
-name: Output JSON and push to core-curriculum/json-data
+name: Output JSON and push to core-curriculum/json
 
 on:
   schedule:
@@ -7,7 +7,7 @@ on:
 
 jobs:
   build:
-    name: Output JSON and push to core-curriculum/json-data
+    name: Output JSON and push to core-curriculum/json
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -17,7 +17,7 @@ jobs:
       - name: Checkout output in data repo
         uses: actions/checkout@v3
         with:
-          repository: core-curriculum/json-data
+          repository: core-curriculum/json
           path: output
           fetch-depth: 1 
       - name: Setup Deno
@@ -25,7 +25,10 @@ jobs:
         with:
           deno-version: v1.x 
       - name: Run task
-        run: deno task make:outcomes
+        run: |
+          deno task make:outcomes
+          deno task make:movies
+          deno task make:q-and-a
       - name: Set current datetime as env variable
         env:
           TZ: 'Asia/Tokyo' # タイムゾーン指定

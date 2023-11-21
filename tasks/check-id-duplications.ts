@@ -1,6 +1,6 @@
-import { toObjectList } from "./libs/tableUtils.ts";
-import { Locale } from "./services/paths.ts";
-import { getTableFiles, LayerHeaders, loadOutcomes, loadTable, loadTableIndex } from "./services/outcomes/mod.ts";
+import { toObjectList } from "../libs/tableUtils.ts";
+import { Locale } from "../services/paths.ts";
+import { getTableFiles, LayerHeaders, loadOutcomes, loadTable, loadTableIndex } from "../services/outcomes/mod.ts";
 
 const locale: Locale = "en"
 

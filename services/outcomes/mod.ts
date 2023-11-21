@@ -1,10 +1,11 @@
-import { ensureDirExists } from "mkdir_recursive";
+import { writeTextFile } from "../writeTextFile.ts";
+import * as path from "https://deno.land/std@0.207.0/path/posix/join.ts";
 import { localeList } from "../paths.ts";
 import { loadFullOutcomesTable, makeOutcomesTree } from "./outcomes.ts";
 import { getAllTables, loadTableInfoDict } from "./tables.ts";
 
-const csvToOutcomeJsons = async () => {
-  return await Promise.all(localeList.map(async (locale) => {
+const csvToOutcomeJsons = () => {
+  return localeList.map((locale) => {
     const tableInfo = loadTableInfoDict(locale);
     const { attrInfo: tableAttrInfo, tables } = getAllTables(locale);
     const { outcomeList, idTree, attrInfo: outcomeAttrInfo } = makeOutcomesTree(
@@ -14,24 +15,24 @@ const csvToOutcomeJsons = async () => {
     );
     const attrInfo = { ...tableAttrInfo, ...outcomeAttrInfo };
     const idList = [...outcomeList, ...tables];
-    const dir = `../../output/${locale}`;
-    await ensureDirExists(new URL(dir, import.meta.url));
-    const dirPath = new URL(dir, import.meta.url).pathname;
-    console.log(`Writing to ${dirPath}`);
-    Deno.writeTextFileSync(
-      `${dirPath}/table_info.json`,
+    const dir = `output/outcomes/${locale}`;
+    writeTextFile(
+      path.join(dir, "table_info.json"),
       JSON.stringify(tableInfo, null, 2),
     );
-    Deno.writeTextFileSync(
-      `${dirPath}/attr_info.json`,
+    writeTextFile(
+      path.join(dir, "attr_info.json"),
       JSON.stringify(attrInfo, null, 2),
     );
-    Deno.writeTextFileSync(
-      `${dirPath}/outcome_tree.json`,
+    writeTextFile(
+      path.join(dir, "outcome_tree.json"),
       JSON.stringify(idTree, null, 2),
     );
-    Deno.writeTextFileSync(`${dirPath}/id_list.json`, JSON.stringify(idList, null, 2));
-  }));
+    writeTextFile(
+      path.join(dir, "id_list.json"),
+      JSON.stringify(idList, null, 2),
+    );
+  });
 }
 
 export { csvToOutcomeJsons }
