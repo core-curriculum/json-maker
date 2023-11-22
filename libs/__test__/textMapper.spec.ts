@@ -1,5 +1,6 @@
-import { mapText, applyMappedInfo } from "@libs/textMapper";
-import type { ReplaceMap } from "@libs/textMapper";
+import { mapText, applyMappedInfo } from "../textMapper";
+import type { ReplaceMap } from "../textMapper";
+import { expect,test,describe } from "bun:test";
 
 const getReplaceMap: () => ReplaceMap<Record<string, string>> = () => {
   let tableIndex = 1;

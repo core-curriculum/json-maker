@@ -14,6 +14,7 @@ import {
   selectColumnsByNames,
   setNameColumnValues,
 } from "../tableUtils.ts";
+import { expect,test,describe } from "bun:test";
 
 const table1 = [
   ["k1", "k2", "k3", "k4"],

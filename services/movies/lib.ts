@@ -10,7 +10,7 @@ const url = {
 }
 
 
-const extractPlayerUrl2 = (html: string) => {
+const extractPlayerUrl = (html: string) => {
   const $ = cheerio.load(html);
   const iframe = $("iframe");
   if (!iframe) return "";
@@ -41,7 +41,7 @@ const getOEmbedData = async (movieUrl: string) => {
   const url = `${base}?${params.toString()}`;
   const res = await fetch(url).then(res => res.json()) as any;
   if (!res) return null;
-  const player_url = extractPlayerUrl2(res.html);
+  const player_url = extractPlayerUrl(res.html);
   const id = res.video_id.toString();
   return { ...res, player_url, id } as MovieData;
 };

@@ -5,7 +5,9 @@ import {
   search,
   searchMap,
   tableToTreeMap,
-} from "@libs/treeUtils";
+} from "../treeUtils";
+import { expect,test,describe } from "bun:test";
+
 
 const testTable = [
   ["a1", "b1", "c1", "d1"],

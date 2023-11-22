@@ -1,4 +1,5 @@
-import { parseCSV } from "@libs/parseCSV";
+import { parseCSV } from "../csv";
+import { expect,test,describe } from "bun:test";
 
 /* eslint-disable max-len */
 const csvString = `"第1層イニシャル","第1層","第2層","第3層","第4層","id","id","H28対応項目"
