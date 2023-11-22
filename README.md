@@ -5,12 +5,13 @@ Github.
 
 ## Usage
 
-First, you need to install [deno](https://deno.land/).
+First, you need to install [bun](https://bun.sh/).
 
 Then, you can run the task with:
 
 ```bash
-$ deno task main
+$ bun install
+$ bun run build
 ```
 
 The output will be in `output` directory.
