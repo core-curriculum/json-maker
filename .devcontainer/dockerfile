@@ -1,9 +1,3 @@
 FROM oven/bun:1
 
-#RUN mkdir -p /home/deno
-#RUN apt-get update && apt-get install -y ssh unzip
-
-#RUN chown  -hR deno /home/deno
-#RUN chmod -R 777 $DENO_DIR
-
-#USER deno
+RUN apt-get update && apt-get install -y ssh

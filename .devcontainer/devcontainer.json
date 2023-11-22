@@ -7,7 +7,6 @@
   },
   "mounts": [
   ],
-  "postStartCommand": "/bin/bash",
   "customizations": {
     "extensions": [
       "ms-azuretools.vscode-docker",
