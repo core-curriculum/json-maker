@@ -1,8 +1,8 @@
-import * as path from "node:path";
+import * as path from "path";
 import { parseCSV } from "../../libs/csv.ts";
 import { outcomeDir, tableDir } from "./paths.ts";
 import type { Locale } from "../locale.ts"
-import { readFileSync} from 'node:fs';
+import { readFileSync} from 'fs';
 
 const readTextFileSync = (path:string)=>readFileSync(path,"utf-8");
 

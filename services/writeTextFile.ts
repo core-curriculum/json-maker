@@ -1,4 +1,4 @@
-import * as path from "node:path";
+import * as path from "path";
 import { ensureDirSync, outputFileSync as writeTextFileSync } from 'fs-extra';
 
 const writeTextFile = (filePath: string, content: string) => {

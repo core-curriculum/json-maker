@@ -1,5 +1,5 @@
 import { writeTextFile } from "../writeTextFile.ts";
-import * as path from "node:path";
+import * as path from "path";
 import { localeList } from "../locale.ts";
 import { loadFullOutcomesTable, makeOutcomesTree } from "./outcomes.ts";
 import { getAllTables, loadTableInfoDict } from "./tables.ts";
