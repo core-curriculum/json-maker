@@ -1,5 +1,5 @@
 import { writeTextFile } from "../writeTextFile.ts";
-import * as path from "https://deno.land/std@0.207.0/path/posix/join.ts";
+import * as path from "node:path";
 import { localeList } from "../locale.ts";
 import { loadFullOutcomesTable, makeOutcomesTree } from "./outcomes.ts";
 import { getAllTables, loadTableInfoDict } from "./tables.ts";

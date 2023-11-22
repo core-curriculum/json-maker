@@ -1,8 +1,6 @@
 import { writeTextFile } from "../writeTextFile.ts";
-import {
-  DOMParser,
-} from "https://deno.land/x/deno_dom@v0.1.43/deno-dom-wasm.ts";
 import { loadCsvAsDictList } from "../load-csv-as-dict-list.ts";
+import * as cheerio from "cheerio";
 import { localeList } from "../locale.ts";
 
 
@@ -11,11 +9,12 @@ const url = {
   en: `https://docs.google.com/spreadsheets/d/1MNa7Zh2h5vGnSYUHU3vFjWPN4GveYsF_xXZnC0wXUOI/export?format=csv&gid=0`
 }
 
-const extractPlayerUrl = (html: string) => {
-  const doc = new DOMParser().parseFromString(html, "text/html")!;
-  const iframe = doc.querySelector("iframe");
+
+const extractPlayerUrl2 = (html: string) => {
+  const $ = cheerio.load(html);
+  const iframe = $("iframe");
   if (!iframe) return "";
-  const url = iframe.getAttribute("src");
+  const url = iframe.attr("src");
   return url;
 }
 
@@ -40,9 +39,9 @@ const getOEmbedData = async (movieUrl: string) => {
     responsive: "true",
   });
   const url = `${base}?${params.toString()}`;
-  const res = await fetch(url).then(res => res.json());
+  const res = await fetch(url).then(res => res.json()) as any;
   if (!res) return null;
-  const player_url = extractPlayerUrl(res.html);
+  const player_url = extractPlayerUrl2(res.html);
   const id = res.video_id.toString();
   return { ...res, player_url, id } as MovieData;
 };
@@ -73,5 +72,6 @@ const writeMoviesDataFromGoogleSpreadSheet = async () => {
     return text;
   }))
 }
+
 
 export { writeMoviesDataFromGoogleSpreadSheet }

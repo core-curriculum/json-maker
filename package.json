@@ -1,0 +1,20 @@
+{
+  "scripts": {
+    "make:movies": "bun run services/movies/index.ts",
+    "make:q-and-a": "bun run services/q-and-a/index.ts",
+    "make:outcomes": "bun run services/outcomes/index.ts",
+    "build": "bun run make:outcomes & bun run make:movies & bun run make:q-and-a"
+  },
+  "dependencies": {
+    "@types/extract-zip": "^2.0.1",
+    "@types/fs-extra": "^11.0.4",
+    "cheerio": "^1.0.0-rc.12",
+    "extract-zip": "^2.0.1",
+    "fs-extra": "^11.1.1",
+    "jszip": "^3.10.1",
+    "npm-run-all": "^4.1.5"
+  },
+  "devDependencies": {
+    "bun-types": "^1.0.13"
+  }
+}

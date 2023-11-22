@@ -1,8 +1,8 @@
-import { ensureDirExists } from "mkdir_recursive";
-import { basename, dirname } from "path";
-import { readZip } from "jszip";
-import { copySync } from "fs/copy.ts";
-import { emptyDir } from "fs/empty_dir.ts";
+import { ensureDirSync,copySync,emptyDir } from 'fs-extra';
+import { basename, dirname,join } from "path";
+import extract from "extract-zip";
+import * as os from "os";
+import * as fs from "fs"
 
 const downloadFile = async (url: string, path: string) => {
   const res = await fetch(url);
@@ -12,16 +12,19 @@ const downloadFile = async (url: string, path: string) => {
     );
   }
   const dir = dirname(path);
-  const dirUrl = new URL(dir, import.meta.url);
-  await ensureDirExists(dirUrl);
-  const file = await Deno.open(path, { write: true, create: true });
-  await res.body.pipeTo(file.writable);
+  ensureDirSync(dir);
+  const arrayBuffer = await res.arrayBuffer();
+  const buffer = Buffer.from(arrayBuffer);
+  fs.writeFileSync(path, buffer);
 };
 
 const extractZip = async (path: string, dest: string) => {
-  const zip = await readZip(path);
-  await zip.unzip(dest);
+  await extract(path,{dir:dest});
 };
+
+const makeTempDir = ()=>{
+  return fs.mkdtempSync(join(os.tmpdir(), "github_"));
+}
 
 /**
  * Extract a github repo to a destination folder
@@ -35,7 +38,7 @@ const extractZip = async (path: string, dest: string) => {
  */
 const extractGithubRepo = async (repoName: string, dest: string) => {
   const url = `https://github.com/${repoName}/archive/refs/heads/main.zip`;
-  const dir = await Deno.makeTempDir();
+  const dir = makeTempDir();
   await downloadFile(url, `${dir}/data.zip`);
   await extractZip(`${dir}/data.zip`, dir);
   copySync(`${dir}/${basename(repoName)}-main`, dest, { overwrite: true });

@@ -1,9 +1,10 @@
-import * as path from "path";
+import * as path from "node:path";
 import { parseCSV } from "../../libs/csv.ts";
 import { outcomeDir, tableDir } from "./paths.ts";
 import type { Locale } from "../locale.ts"
+import { readFileSync} from 'node:fs';
 
-const readTextFileSync = Deno.readTextFileSync;
+const readTextFileSync = (path:string)=>readFileSync(path,"utf-8");
 
 type Table<HEADER extends ReadonlyArray<string> = readonly string[]> = [
   readonly [...HEADER],

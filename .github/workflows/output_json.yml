@@ -27,15 +27,9 @@ jobs:
           path: output
           fetch-depth: 1 
           token: ${{ steps.app-token.outputs.token }}
-      - name: Setup Deno
-        uses: denoland/setup-deno@v1
-        with:
-          deno-version: v1.x 
-      - name: Run task
-        run: |
-          deno task make:outcomes
-          deno task make:movies
-          deno task make:q-and-a
+      - uses: oven-sh/setup-bun@v1
+      - run: bun install
+      - run: bun run build
       - name: Set current datetime as env variable
         env:
           TZ: 'Asia/Tokyo' # タイムゾーン指定
@@ -55,4 +49,5 @@ jobs:
           else
             echo no change
           fi
+      - uses: gautamkrishnar/keepalive-workflow@v1
 

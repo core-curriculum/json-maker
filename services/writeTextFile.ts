@@ -1,12 +1,12 @@
-import { ensureDirSync } from "https://deno.land/std@0.207.0/fs/ensure_dir.ts";
-import * as path from "https://deno.land/std@0.207.0/path/posix/mod.ts";
+import * as path from "node:path";
+import { ensureDirSync, outputFileSync as writeTextFileSync } from 'fs-extra';
 
 const writeTextFile = (filePath: string, content: string) => {
   const dir = path.dirname(filePath);
-  const absoluteDir = path.join(Deno.cwd(), dir);
+  const absoluteDir = path.join(process.cwd(), dir);
   ensureDirSync(absoluteDir);
   const fullPath = path.join(absoluteDir, path.basename(filePath));
-  Deno.writeTextFileSync(fullPath, content);
+  writeTextFileSync(fullPath, content);
 
 }
 
