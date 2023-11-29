@@ -15,6 +15,12 @@ const fileToTableLink = (file: string) => {
 
 type Expand<T extends Record<string, unknown>> = { [K in keyof T]: T[K] };
 
+const getHeader = (file: keyof Tables, locale: Locale) => {
+  const table = loadTable(file, locale);
+  const header = table[0].filter((key)=>key!=="id" && key!=="index");
+  return header;
+}
+
 const loadTableInfoDict = (locale: Locale) => {
   const trimExt = (filename: string) => filename.replace(/\.[^\.]+$/, "");
   const makeIndexed = <T extends Record<string, unknown>, K extends keyof T>(
@@ -25,6 +31,7 @@ const loadTableInfoDict = (locale: Locale) => {
       return { ...indexed, [item[key] as string]: item };
     }, {} as { [key in T[K] extends string ? T[K] : never]: T });
   };
+
   const tableIndex = loadTableIndex(locale);
   const infoList = toObjectList(tableIndex).map(info => {
     const file = trimExt(info.file);
@@ -32,7 +39,8 @@ const loadTableInfoDict = (locale: Locale) => {
     const columns: Record<string, string> = Object.fromEntries(
       info.columns.split(",").map(entry => entry.split(":")),
     );
-    return { ...info, file, link, columns };
+    const header = getHeader(file as keyof Tables, locale);
+    return { ...info, file, link, columns, header };
   });
   return makeIndexed(infoList, "file");
 };
