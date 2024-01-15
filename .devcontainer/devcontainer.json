@@ -24,6 +24,12 @@
       "terminal.integrated.defaultProfile.linux": "bash"
     },
       "vscode": {
+        "extensions": [
+          "edonet.vscode-command-runner",
+          "Pandy.bun",
+          "formulahendry.code-runner",
+          "ZixuanChen.vitest-explorer"
+        ]
 
     }
   }
