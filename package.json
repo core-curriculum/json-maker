@@ -13,6 +13,7 @@
     "fs-extra": "^11.1.1"
   },
   "devDependencies": {
+    "@biomejs/biome": "1.5.1",
     "bun-types": "^1.0.13",
     "vitest": "^1.2.0"
   }

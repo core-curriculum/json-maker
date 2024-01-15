@@ -28,9 +28,11 @@
           "edonet.vscode-command-runner",
           "Pandy.bun",
           "formulahendry.code-runner",
-          "ZixuanChen.vitest-explorer"
+          "ZixuanChen.vitest-explorer",
+          "oven.bun-vscode"
         ]
 
     }
-  }
+  },
+  "remoteUser": "bun"
 }
