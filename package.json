@@ -3,7 +3,8 @@
     "make:movies": "bun run services/movies/index.ts",
     "make:q-and-a": "bun run services/q-and-a/index.ts",
     "make:outcomes": "bun run services/outcomes/index.ts",
-    "build": "bun run make:outcomes & bun run make:movies & bun run make:q-and-a"
+    "make:contributors": "bun run services/contributors/index.ts",
+    "build": "bun run make:outcomes & bun run make:movies & bun run make:q-and-a & bun run make:contributors"
   },
   "dependencies": {
     "@types/extract-zip": "^2.0.1",
