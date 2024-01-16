@@ -5,33 +5,27 @@
   "features": {
     "ghcr.io/devcontainers/features/github-cli:1": {}
   },
-  "mounts": [
-  ],
+  "mounts": [],
   "customizations": {
-    "extensions": [
-      "ms-azuretools.vscode-docker",
-      "GitHub.copilot-chat"
-    ],
-    "settings": {
-      "terminal.integrated.profiles.linux": {
-        "bash": {
-          "path": "/bin/bash",
-          "args":[
-            "-l"
-          ]
-        }
-      },
-      "terminal.integrated.defaultProfile.linux": "bash"
-    },
-      "vscode": {
-        "extensions": [
-          "edonet.vscode-command-runner",
-          "Pandy.bun",
-          "formulahendry.code-runner",
-          "ZixuanChen.vitest-explorer",
-          "oven.bun-vscode"
-        ]
-
+    "vscode": {
+      "extensions": [
+        "ms-azuretools.vscode-docker",
+        "GitHub.copilot-chat",
+        "formulahendry.code-runner",
+        "ZixuanChen.vitest-explorer",
+        "oven.bun-vscode"
+      ],
+      "settings": {
+        "terminal.integrated.profiles.linux": {
+          "bash": {
+            "path": "/bin/bash",
+            "args": [
+              "-l"
+            ]
+          }
+        },
+        "terminal.integrated.defaultProfile.linux": "bash"
+      }
     }
   },
   "remoteUser": "bun"
