@@ -9,6 +9,11 @@ const url = {
   en: "https://docs.google.com/spreadsheets/d/1MNa7Zh2h5vGnSYUHU3vFjWPN4GveYsF_xXZnC0wXUOI/export?format=csv&gid=0",
 };
 
+const filesInfoUrl = {
+  ja: "https://docs.google.com/spreadsheets/d/1MNa7Zh2h5vGnSYUHU3vFjWPN4GveYsF_xXZnC0wXUOI/export?format=csv&gid=161218406",
+  en: "https://docs.google.com/spreadsheets/d/1MNa7Zh2h5vGnSYUHU3vFjWPN4GveYsF_xXZnC0wXUOI/export?format=csv&gid=161218406",
+};
+
 const extractPlayerUrl = (html: string) => {
   const $ = cheerio.load(html);
   const iframe = $("iframe");
@@ -78,19 +83,26 @@ const makeDataFromGoogleSpreadSheet = async (url: string) => {
         )
       ).filter(notNull)
     : [];
-  return await convertFilesToFilesInfo(data);
+  return data;
 };
 
 const writeMoviesDataFromGoogleSpreadSheet = async () => {
-  await Promise.all(
-    localeList.map(async (locale) => {
-      const data = await makeDataFromGoogleSpreadSheet(url[locale]);
-      const text = JSON.stringify(data, null, 2);
-      const filePath = `output/movies/${locale}.json`;
-      writeTextFile(filePath, text);
-      return text;
-    }),
-  );
+  const moviesData = localeList.map(async (locale) => {
+    const data = await makeDataFromGoogleSpreadSheet(url[locale]);
+    const text = JSON.stringify(data, null, 2);
+    const filePath = `output/movies/${locale}.json`;
+    writeTextFile(filePath, text);
+    return text;
+  });
+  const filesInfoData = localeList.map(async (locale) => {
+    const data = await loadCsvAsDictList(filesInfoUrl[locale]);
+    console.log(data);
+    const text = JSON.stringify(data, null, 2);
+    const filePath = `output/movies/${locale}-files.json`;
+    writeTextFile(filePath, text);
+    return text;
+  });
+  await Promise.all([...moviesData,...filesInfoData]);
 };
 
 export { writeMoviesDataFromGoogleSpreadSheet };
