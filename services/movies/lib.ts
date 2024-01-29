@@ -77,8 +77,7 @@ const makeDataFromGoogleSpreadSheet = async (url: string) => {
           table.map(async (row) => {
             const movieUrl = row.url;
             const oEmbedData = await getOEmbedData(movieUrl);
-            const files = row.files ? row.files.split(",").map((s) => s.trim()) : [];
-            return oEmbedData ? { ...row, files, id: oEmbedData.id, data: oEmbedData } : null;
+            return oEmbedData ? { ...row, id: oEmbedData.id, data: oEmbedData } : null;
           }),
         )
       ).filter(notNull)
@@ -96,7 +95,6 @@ const writeMoviesDataFromGoogleSpreadSheet = async () => {
   });
   const filesInfoData = localeList.map(async (locale) => {
     const data = await loadCsvAsDictList(filesInfoUrl[locale]);
-    console.log(data);
     const text = JSON.stringify(data, null, 2);
     const filePath = `output/movies/${locale}-files.json`;
     writeTextFile(filePath, text);
