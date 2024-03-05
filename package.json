@@ -1,10 +1,8 @@
 {
   "scripts": {
-    "make:movies": "bun run services/movies/index.ts",
-    "make:q-and-a": "bun run services/q-and-a/index.ts",
+    "make:sheets": "bun run services/information-sheet.ts",
     "make:outcomes": "bun run services/outcomes/index.ts",
-    "make:contributors": "bun run services/contributors/index.ts",
-    "build": "bun run make:outcomes & bun run make:movies & bun run make:q-and-a & bun run make:contributors"
+    "build": "bun run make:outcomes & bun run make:sheets"
   },
   "dependencies": {
     "@types/extract-zip": "^2.0.1",
